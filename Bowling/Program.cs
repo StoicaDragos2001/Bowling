@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            var game = new Game();
+            var game = new Game(10);
             game.Roll(2);
             game.Roll(4);
 

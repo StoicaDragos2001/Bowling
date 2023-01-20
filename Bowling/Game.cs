@@ -11,9 +11,15 @@
 
         public Game(int frames = 10)
         {
-            if (frames < 1 && frames > 10)
+            if (frames < 1 || frames > 10)
+            {
+                _framesLeft = frames;
                 throw new ArgumentOutOfRangeException("The number of frames must be between 1 and 10");
-            _framesLeft = frames;
+            }
+            else
+            {
+                _framesLeft = frames;
+            }
         }
 
         public void Roll(int pins)
@@ -22,8 +28,9 @@
             {
                 _shotsPerFrame.Add(Tuple.Create(pins, 0));
                 _bonusRound = true;
+                _framesLeft -= 1;
             }
-            else
+            else if(_framesLeft > 0)
             {
                 if (_firstShotBuffer == -1)
                 {
@@ -74,6 +81,12 @@
             {
                 Console.WriteLine(String.Format("Round {0}:", roundIndex));
                 _totalScore += CalculateFrameScore(roundIndex);
+            }
+
+            if(_bonusRound)
+            {
+                Console.WriteLine("Bonus round:");
+                Console.WriteLine(String.Format("({0}) -> {1}", _shotsPerFrame[numberOfRounds].Item1, _shotsPerFrame[numberOfRounds].Item1));
             }
             Console.WriteLine(String.Format("------> Total score: {0} <------", _totalScore));
         }
