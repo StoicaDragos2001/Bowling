@@ -1,18 +1,16 @@
-﻿using Bowling.UtilityComponents;
+﻿using Game;
 
-
-
-namespace Game
+namespace Bowling.PlayerLogic
 {
     public class Player : IPlayer
     {
         private IStrategy Strategy = new NormalStrategy();
         private Score Score = new Score();
-        public String StrategyName { get; set; }
-        public String Name { get; set; }
+        public string StrategyName { get; set; }
+        public string Name { get; set; }
         public int NumberOfFrames { get; set; }
 
-        public Player(String name)
+        public Player(string name)
         {
             Name = name;
         }
@@ -43,7 +41,7 @@ namespace Game
             StrategyName = Strategy.Name;
         }
 
-        public void SimulateRolls()
+        public void Play()
         {
             var generatedRolls = Strategy.GenerateRolls();
             var firstRoll = generatedRolls.Item1;
@@ -52,6 +50,7 @@ namespace Game
             if (Score.IsFinished)
             {
                 Roll(firstRoll);
+                CalculateScore();
             }
             else
             {

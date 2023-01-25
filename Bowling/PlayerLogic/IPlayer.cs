@@ -1,14 +1,14 @@
-﻿namespace Game
+﻿namespace Bowling.PlayerLogic
 {
     public interface IPlayer
     {
         public void Roll(int pins);
         public void SetStrategy(IStrategy strategy);
-        public void SimulateRolls();
+        public void Play();
         public void DisplayScore();
         public void CalculateScore();
         public int GetTotalScore();
-        public String Name { get; set; }
-        public String StrategyName { get; set; }
+        public string Name { get; set; }
+        public string StrategyName { get; set; }
     }
 }

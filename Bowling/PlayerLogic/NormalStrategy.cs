@@ -1,6 +1,6 @@
 ﻿using Bowling.UtilityComponents;
 
-namespace Game
+namespace Bowling.PlayerLogic
 {
     public class NormalStrategy : IStrategy
     {
@@ -8,7 +8,8 @@ namespace Game
         private int FirstRollScore;
         private int SecondRollScore;
 
-        public String Name {
+        public string Name
+        {
             get
             {
                 return "normal";
@@ -24,18 +25,18 @@ namespace Game
 
         private void GenerateFirstRoll()
         {
-            FirstRollScore = Random.Next(Constants.RandomUpperBound);
+            FirstRollScore = Random.Next(ValueConstants.RandomUpperBound);
         }
 
         private void GenerateSecondRoll()
         {
-            if (FirstRollScore < Constants.MaxShotScore)
+            if (FirstRollScore < ValueConstants.MaxShotScore)
             {
-                SecondRollScore = Random.Next(Constants.RandomUpperBound - FirstRollScore);
+                SecondRollScore = Random.Next(ValueConstants.RandomUpperBound - FirstRollScore);
             }
             else
             {
-                SecondRollScore = Random.Next(Constants.RandomUpperBound);
+                SecondRollScore = Random.Next(ValueConstants.RandomUpperBound);
             }
         }
     }

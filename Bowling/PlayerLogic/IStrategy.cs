@@ -1,8 +1,8 @@
-﻿namespace Game
+﻿namespace Bowling.PlayerLogic
 {
     public interface IStrategy
     {
         public Tuple<int, int> GenerateRolls();
-        public String Name { get; }
+        public string Name { get; }
     }
 }

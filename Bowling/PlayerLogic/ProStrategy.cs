@@ -1,6 +1,6 @@
 ﻿using Bowling.UtilityComponents;
 
-namespace Game
+namespace Bowling.PlayerLogic
 {
     public class ProStrategy : IStrategy
     {
@@ -8,7 +8,7 @@ namespace Game
         private int FirstRollScore;
         private int SecondRollScore;
 
-        public String Name
+        public string Name
         {
             get
             {
@@ -25,18 +25,18 @@ namespace Game
 
         private void GenerateFirstRoll()
         {
-            FirstRollScore = Random.Next(Constants.ProCheatValue, Constants.RandomUpperBound);
+            FirstRollScore = Random.Next(ValueConstants.ProCheatValue, ValueConstants.RandomUpperBound);
         }
 
         private void GenerateSecondRoll()
         {
             if (FirstRollScore < 10)
             {
-                SecondRollScore = Random.Next(Constants.RandomUpperBound - FirstRollScore);
+                SecondRollScore = Random.Next(ValueConstants.RandomUpperBound - FirstRollScore);
             }
             else
             {
-                SecondRollScore = Random.Next(Constants.ProCheatValue, Constants.RandomUpperBound);
+                SecondRollScore = Random.Next(ValueConstants.ProCheatValue, ValueConstants.RandomUpperBound);
             }
         }
     }

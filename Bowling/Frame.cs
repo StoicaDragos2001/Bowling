@@ -60,12 +60,12 @@ namespace Game
 
         public bool IsStrike()
         {
-            return FirstRollScore == Constants.MaxShotScore;
+            return FirstRollScore == ValueConstants.MaxShotScore;
         }
 
         public bool IsSpare()
         {
-            return FirstRollScore + SecondRollScore == Constants.MaxShotScore;
+            return FirstRollScore + SecondRollScore == ValueConstants.MaxShotScore;
         }
     }
 }

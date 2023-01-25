@@ -1,19 +1,17 @@
 ﻿using Bowling.Exceptions;
+using Bowling.PlayerLogic;
 using Bowling.UtilityComponents;
-
-
 
 namespace Game
 {
     public sealed class Game
     {
-        private static Game GameInstance;
-        private String WinnerName;
-        private List<IPlayer> Players = new List<IPlayer>();
-        private int MaxScore;
-        private int NoPlayers;
         public int NumberOfFrames { get; set; }
         public int TotalScore { get; set; }
+        private static Game GameInstance;
+        private List<IPlayer> Players = new List<IPlayer>();
+        private int NoPlayers;
+
         public int NumberOfPlayers
         {
             get
@@ -24,20 +22,6 @@ namespace Game
             {
                 NoPlayers = value;
             }
-        }
-        
-        private Game(int numberOfPlayers)
-        {
-            if (numberOfPlayers < 1)
-            {
-                throw new NotEnoughPlayersException(Constants.NumberOfPlayersMessage);
-            }
-            else
-            {
-                NumberOfPlayers = numberOfPlayers;
-                GeneratePlayers(NumberOfPlayers);
-            }
-            NumberOfFrames = Constants.NumberOfFrames;
         }
 
         public static Game GetInstance(int numberOfPlayers)
@@ -51,17 +35,41 @@ namespace Game
 
         public void Play()
         {
-            Random random = new Random();
-            for (var frameIndex = 0; frameIndex < NumberOfFrames; frameIndex++)
+            for (var frameIndex = 0; frameIndex <= NumberOfFrames; frameIndex++)
             {
                 foreach (var player in Players)
                 {
-                    player.SimulateRolls();
+                    player.Play();
                 }
             }
+        }
+
+        public void DisplayScoreBoard()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(MessageConstants.BowlingBanner);
+            Console.ResetColor();
             foreach (var player in Players)
-                player.SimulateRolls();
-            Calculate();
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(String.Format(MessageConstants.PlayerDisplayFormat, player.Name, player.StrategyName));
+                Console.ResetColor();
+                player.DisplayScore();
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(String.Format(MessageConstants.WinnerDisplayFormat, GetWinnerName(), GetMaxScore()));
+            Console.ResetColor();
+        }
+
+        private Game(int numberOfPlayers)
+        {
+            if (numberOfPlayers < 1)
+            {
+                throw new NotEnoughPlayersException(MessageConstants.NumberOfPlayersMessage);
+            }
+            NumberOfPlayers = numberOfPlayers;
+            GeneratePlayers(NumberOfPlayers);
+            NumberOfFrames = ValueConstants.NumberOfFrames;
         }
 
         private void GeneratePlayers(int numberOfPlayers)
@@ -75,19 +83,19 @@ namespace Game
         private IPlayer CreateRandomPlayer()
         {
             var random = new Random();
-            var playerType = random.Next(Constants.NumberOfStrategies);
+            var playerType = random.Next(ValueConstants.NumberOfStrategies);
             switch (playerType)
             {
                 case 0:
-                    var NormalStrat = new NormalStrategy();
-                    var NormalPlayer = new Player(NameGenerator.Get());
-                    NormalPlayer.SetStrategy(NormalStrat);
-                    return NormalPlayer;
+                    var normalStrategy = new NormalStrategy();
+                    var normalPlayer = new Player(NameGenerator.Get());
+                    normalPlayer.SetStrategy(normalStrategy);
+                    return normalPlayer;
                 default:
-                    var ProStrat = new ProStrategy();
-                    var ProPlayer = new Player(NameGenerator.Get());
-                    ProPlayer.SetStrategy(ProStrat);
-                    return ProPlayer;
+                    var proStrategy = new ProStrategy();
+                    var proPlayer = new Player(NameGenerator.Get());
+                    proPlayer.SetStrategy(proStrategy);
+                    return proPlayer;
             }
         }
 
@@ -95,50 +103,19 @@ namespace Game
         {
             if (NumberOfPlayers == Players.Count)
             {
-                throw new AddedMorePlayersThanDeclaredException(Constants.DeclaredAnotherNumberOfPlayers);
+                throw new AddedMorePlayersThanDeclaredException(MessageConstants.DeclaredAnotherNumberOfPlayers);
             }
-            else
-            {
-                Players.Add(player);
-            }
+            Players.Add(player);
         }
 
-        public void ShowPlayers()
+        private int GetMaxScore()
         {
-            foreach (Player player in Players)
-            {
-                Console.WriteLine(player.Name);
-            }
+            return Players.OrderByDescending(x => x.GetTotalScore()).First().GetTotalScore();
         }
 
-        public void DisplayScoreBoard()
+        private string GetWinnerName()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(Constants.BowlingBanner);
-            Console.ResetColor();
-            foreach (var player in Players)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(String.Format(Constants.PlayerDisplayFormat, player.Name, player.StrategyName));
-                Console.ResetColor();
-                player.DisplayScore();
-            }
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(String.Format(Constants.WinnerDisplayFormat, WinnerName, MaxScore));
-            Console.ResetColor();
-        }
-
-        private void Calculate()
-        {
-            foreach (var player in Players)
-            {
-                player.CalculateScore();
-                if (player.GetTotalScore() > MaxScore)
-                {
-                    MaxScore = player.GetTotalScore();
-                    WinnerName = player.Name;
-                }
-            }
+            return Players.Where(x => x.GetTotalScore() == GetMaxScore()).First().Name;
         }
     }
 }
