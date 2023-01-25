@@ -1,77 +1,71 @@
-﻿namespace Game
+﻿using Bowling.UtilityComponents;
+
+namespace Game
 {
     public class Frame
     {
-        private int firstShot;
-        private int secondShot;
-        private bool firstShotUsed = false;
-        private bool secondShotUsed = false;
+        private int FirstRollScore;
+        private int SecondRollScore;
+        private bool IsFirstRollUsed = false;
+        private bool IsSecondRollUsed = false;
 
         public int FirstShot
         {
             get
             {
-                return firstShot;
+                return FirstRollScore;
             }
             set
             {
-                firstShot = value;
+                FirstRollScore = value;
             }
         }
+
         public int SecondShot
         {
             get
             {
-                return secondShot;
+                return SecondRollScore;
             }
             set
             {
-                secondShot = value;
+                SecondRollScore = value;
             }
         }
 
         public Frame(int firstShotScore = 0, int secondShotScore = 0)
         {
-            firstShot = firstShotScore;
-            secondShot = secondShotScore;
+            FirstRollScore = firstShotScore;
+            SecondRollScore = secondShotScore;
         }
 
         public bool CanInsert()
         {
-            if (firstShotUsed == false || secondShotUsed == false)
-                return true;
-            return false;
+            return IsFirstRollUsed == false || IsSecondRollUsed == false;
         }
 
-        public void Insert(int score)
+        public void AddScore(int score)
         {
-            if (firstShotUsed == false)
+            if (IsFirstRollUsed == false)
             {
-                firstShotUsed = true;
+                IsFirstRollUsed = true;
                 FirstShot = score;
             }
             else
             {
-                secondShotUsed = true;
+                IsSecondRollUsed = true;
                 SecondShot = score;
             }
         }
 
         public bool IsStrike()
         {
-            if (firstShot == 10)
-                return true;
-            return false;
+            return FirstRollScore == Constants.MaxShotScore;
         }
 
         public bool IsSpare()
         {
-            if (firstShot + secondShot == 10)
-                return true;
-            return false;
+            return FirstRollScore + SecondRollScore == Constants.MaxShotScore;
         }
-        
-
-
     }
 }
