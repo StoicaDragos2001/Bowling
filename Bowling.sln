@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bowling", "Bowling\Bowling.csproj", "{C2AF0FF4-8780-437E-AF27-5305F2E7AC5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling.UnitTests", "UnitTest\Bowling.UnitTests.csproj", "{2AF0263D-BAEF-49A3-8154-4BB0ED95DA69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bowling.UnitTests", "UnitTest\Bowling.UnitTests.csproj", "{2AF0263D-BAEF-49A3-8154-4BB0ED95DA69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            var bowling = Game.GetInstance(4);
+            var bowling = Game.GetInstance(3);
 
             bowling.Play();
 
