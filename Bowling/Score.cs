@@ -11,12 +11,27 @@ namespace Game
         private List<int> ScorePerFrame = new List<int>();
         private int CurrentFrameIndex = 0;
         private bool IsCalculated = false;
-        
+        private bool CheckedForBonus = false;
+
         public int TotalScore { get; set; }
 
         public Score()
         {
             InitializeFrames(ValueConstants.NumberOfFrames);
+        }
+
+        public bool IsFinishedWithNormalRounds()
+        {
+            return CurrentFrameIndex == 9;
+        }
+
+        public int GetPoints(int frameIndex, int shotIndex)
+        {
+            if (shotIndex == 0)
+                return Frames[frameIndex].FirstShot;
+            if (shotIndex == 1)
+                return Frames[frameIndex].SecondShot;
+            throw new ShotIndexOutOfBoundsException(MessageConstants.ShotIndexMessage);
         }
 
         public void InitializeFrames(int numberOfFrames)
@@ -33,20 +48,23 @@ namespace Game
             }
             else
             {
-                if (CurrentFrameIndex == ValueConstants.NumberOfFrames - 1)
-                {
-                    InsertForLastBonus(pins);
-                    IsFinished = true;
-                }
+                if (CheckedForBonus)
+                    throw new TriedToRollMoreTimesThanAllowedException(MessageConstants.NumberOfRollsMessage);
                 else
                 {
-                    InsertForNextFrame(pins);
+                    if (CurrentFrameIndex == ValueConstants.NumberOfFrames - 1)
+                    {
+                        IsFinished = true;
+                        InsertForLastBonus(pins);
+                    }
+                    else if (CurrentFrameIndex < ValueConstants.NumberOfFrames - 1) InsertForNextFrame(pins);
                 }
             }
         }
 
         public bool CanInsertForLastBonus()
         {
+            CheckedForBonus = true;
             var lastFrame = Frames[ValueConstants.NumberOfFrames - 1];
             return Bonus == -1 && (lastFrame.IsSpare() || lastFrame.IsStrike());
         }
@@ -76,12 +94,11 @@ namespace Game
 
         public void Display()
         {
-            if (!IsCalculated)
+            if (!IsCalculated && IsFinished)
                 Calculate();
 
             if (IsFinished)
             {
-
                 var numFramesExceptLast = ValueConstants.NumberOfFrames - 1;
                 for (var frameIndex = 0; frameIndex < numFramesExceptLast; frameIndex++)
                 {
@@ -155,4 +172,4 @@ namespace Game
         }
 
     }
-}   
+}

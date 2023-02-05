@@ -47,7 +47,7 @@ namespace Bowling.PlayerLogic
             var firstRoll = generatedRolls.Item1;
             var secondRoll = generatedRolls.Item2;
 
-            if (Score.IsFinished)
+            if (Score.IsFinishedWithNormalRounds())
             {
                 Roll(firstRoll);
                 CalculateScore();
