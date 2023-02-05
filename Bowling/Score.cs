@@ -1,5 +1,7 @@
 ﻿using Bowling.Exceptions;
 using Bowling.UtilityComponents;
+using Microsoft.VisualBasic;
+using System.Runtime.CompilerServices;
 
 namespace Game
 {
@@ -17,6 +19,15 @@ namespace Game
         public Score()
         {
             InitializeFrames(ValueConstants.NumberOfFrames);
+        }
+
+        public int GetPoints(int frameIndex, int shotIndex)
+        {
+            if(shotIndex == 0)
+                return Frames[frameIndex].FirstShot;
+            if(shotIndex == 1)
+                return Frames[frameIndex].SecondShot;
+            throw new ShotIndexOutOfBoundsException(MessageConstants.ShotIndexMessage);
         }
 
         public void InitializeFrames(int numberOfFrames)
